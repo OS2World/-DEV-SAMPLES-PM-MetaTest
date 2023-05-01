@@ -3,16 +3,17 @@ This program is the star5.c program from Petzold that has had code added to crea
 
 LICENSE
 ===============
-* 
+* The 3-Clause BSD License.
 
 COMPILE TOOLS
 ===============
-* 
+* yum install git gcc make libc-devel binutils watcom-wrc watcom-wlink-hll
  
 AUTHORS
 ===============
+* Martin Iturbide (2023)
+* Dan
 * Charles Petzold
-* 
 
 LINKS
 ===============

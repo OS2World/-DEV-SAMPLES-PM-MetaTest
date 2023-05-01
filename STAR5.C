@@ -1,19 +1,16 @@
 /*---------------------------------
    STAR5.C -- Draws 5-Pointed Star
  ----------------------------------*/
-
 /*
 Modified to write a PM metafile which can be viewed by the PM Picture
-displayer within the utilities directory of the OS/2 1.2 Desktop.
+displayer within the utilities directory of the OS/2 Desktop.
 */
-
-
 
 #define INCL_GPI
 
 #include <os2.h>
 
-MRESULT EXPENTRY ClientWndProc (HWND, USHORT, MPARAM, MPARAM) ;
+MRESULT EXPENTRY ClientWndProc (HWND, ULONG, MPARAM, MPARAM) ;
 
 /* Added for metafile */
 DEVOPENSTRUC dop;
@@ -22,7 +19,7 @@ HDC			hdc;
 HDC			hdcMeta;
 HPS			hpsMeta;
 HMF			hmf;
-SIZEL			sizlPage;
+SIZEL		sizlPage;
 POINTL		ptl1, ptl2;
 /* End of metafile stuff */
 
@@ -41,21 +38,21 @@ int main (void)
 
      hmq = WinCreateMsgQueue (hab, 0) ;
 
-     WinRegisterClass (hab, szClientClass, ClientWndProc, CS_SIZEREDRAW, 0) ;
+     WinRegisterClass (hab, (PCSZ) szClientClass, (PFNWP) ClientWndProc, CS_SIZEREDRAW, 0) ;
 
      hwndFrame = WinCreateStdWindow (HWND_DESKTOP, WS_VISIBLE,
-                                     &flFrameFlags, szClientClass, NULL,
-                                     0L, NULL, 0, &hwndClient) ;
+                                     &flFrameFlags, (PCSZ) szClientClass, NULLHANDLE,
+                                     0L, NULLHANDLE, 0, &hwndClient) ;
 
 /* Added for metafile */
-	dop.pszLogAddress = NULL;	
-	dop.pszDriverName = "DISPLAY";	
-	dop.pdriv = NULL;	
-	dop.pszDataType = NULL;	
+	dop.pszLogAddress = NULL;
+	dop.pszDriverName = (PSZ) "DISPLAY";
+	dop.pdriv = NULL;
+	dop.pszDataType = NULL;
 
 	hdcMeta = DevOpenDC(hab,
 				OD_METAFILE,
-				"*",
+				(PCSZ) "*",
 				4L,
 				(PDEVOPENDATA) &dop,
 				hdc);
@@ -96,17 +93,17 @@ int main (void)
 	ptl1.y = 230;
 	GpiMove(hpsMeta, &ptl1);
 	GpiCharString(hpsMeta, 41L,
-	"This is a sample Metafile created by Dan.");
+	(PCCH) "This is a sample Metafile created by Dan.");
 
-	GpiAssociate(hpsMeta, NULL);
+	GpiAssociate(hpsMeta, NULLHANDLE);
 	hmf = DevCloseDC(hdcMeta);
 
 	/* Sabve metafile to disk */
-	GpiSaveMetaFile(hmf, "box.met");
+	GpiSaveMetaFile(hmf, (PCSZ) "box.met");
 
 /* End of metafile code */
 
-     while (WinGetMsg (hab, &qmsg, NULL, 0, 0))
+     while (WinGetMsg (hab, &qmsg, NULLHANDLE, 0, 0))
           WinDispatchMsg (hab, &qmsg) ;
 
      WinDestroyWindow (hwndFrame) ;
@@ -117,9 +114,9 @@ int main (void)
 
 
 
-MRESULT EXPENTRY ClientWndProc (HWND hwnd, USHORT msg, MPARAM mp1, MPARAM mp2)
+MRESULT EXPENTRY ClientWndProc (HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2)
      {
-     static POINTL aptlStar[5] = {-59,-81, 0,100, 59,-81, -95,31, 95,31 } ;
+     static POINTL aptlStar[5] = {{-59,-81}, {0,100}, {59,-81}, {-95,31}, {95,31} } ;
      static SHORT  cxClient, cyClient ;
      HPS           hps ;
      POINTL        aptl[5] ;
@@ -133,8 +130,8 @@ MRESULT EXPENTRY ClientWndProc (HWND hwnd, USHORT msg, MPARAM mp1, MPARAM mp2)
                return 0 ;
 
           case WM_PAINT:
- 
-               hps = WinBeginPaint (hwnd, NULL, NULL) ;
+
+               hps = WinBeginPaint (hwnd, NULLHANDLE, NULLHANDLE) ;
                GpiErase (hps) ;
 
                for (sIndex = 0 ; sIndex < 5 ; sIndex++)
@@ -152,4 +149,3 @@ MRESULT EXPENTRY ClientWndProc (HWND hwnd, USHORT msg, MPARAM mp1, MPARAM mp2)
           }
      return WinDefWindowProc (hwnd, msg, mp1, mp2) ;
      }
-

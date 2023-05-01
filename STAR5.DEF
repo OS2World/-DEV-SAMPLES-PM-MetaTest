@@ -4,8 +4,7 @@
 
 NAME           STAR5     WINDOWAPI
 
-DESCRIPTION    'Draws 5-Pointed Star (C) Charles Petzold, 1988'
-PROTMODE
-HEAPSIZE       1024
+DESCRIPTION     '@#OS2World:1.01#@##1## 30 Apr 2023 20:00:00     ARCAOS-507::::::v1.01@@Draws 5-Pointed Star with MET file. PM test'
+
 STACKSIZE      8192
 EXPORTS        ClientWndProc
